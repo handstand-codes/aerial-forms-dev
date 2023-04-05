@@ -7,6 +7,7 @@ import {
   Provider as GadgetProvider,
   useGadget,
 } from "@gadgetinc/react-shopify-app-bridge";
+
 import { api } from "./api";
 
 import { PolarisProvider } from "./components";
@@ -44,20 +45,8 @@ function EmbeddedApp() {
 
   return isAuthenticated ? (
     <>
-    <NavigationMenu
-        navigationLinks={[
-          {
-            label: "Home Page",
-            destination: "/",
-          },
-          {
-            label: "Create New Email",
-            destination: "/create-new-email",
-          },
-        ]}
-      />
-    <Routes pages={pages} />
-  </>
+      <Routes pages={pages} />
+    </>
   ) : (
     <span>Authenticating...</span>
   );

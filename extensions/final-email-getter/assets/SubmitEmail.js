@@ -4,35 +4,32 @@ const api = new Gadget();
 class Submit extends HTMLElement {
     constructor() {
         super()
-        this.form = this.querySelector("form");
-        this.form.addEventListener("submit", onSubmitHandler);
-        
-    }
+
+        const form = this.querySelector("form");
+        this.addEventListener("submit", async (e) => {
+            e.preventDefault()
+            const formData = new FormData(form)
+            const email = formData.get("email")
+            const currentStoreId = formData.get("storeId")
+            if(this.form.posted_successfully == true) {
+                console.log("WORKS")
+            }
+
+            await saveSelections(currentStoreId, email);
+        });
+
+  }
 }
 customElements.define('submit-component', Submit)
 
 
-async function onSubmitHandler(event) {
-    event.preventDefault();
-  
-    const email = document.getElementById("submitEmail").value;
-    console.log(email)
-    await saveSelections(email);
-}
-
-
-async function saveSelections(email) {
+async function saveSelections(currentStoreId, email) {
     
     await api.email.create({
         email: 
             {
-            submitEmail: email,             
+                currentStoreId: currentStoreId,    
+                submitEmail: email           
             }
     });
 }
-
-
-
-
-
-

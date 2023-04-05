@@ -8,8 +8,8 @@
     <div class="flex items-center justify-center">
         <h2 class=""> {{ block.settings.email }} </h2>
 
-        {% form 'customer', class: 'flex' %}
-            
+        <form class='flex'>
+            <input id="shopID" type="hidden" name="storeId" value="{{ shop.id }}">
             <input
                 class=""
                 style="
@@ -27,7 +27,7 @@
                 "
                 id="submitEmail"
                 type="email"
-                name="contact[email]"
+                name="email"
                 value="{{ form.email }}"
                 aria-required="true"
                 autocorrect="off"
@@ -51,9 +51,9 @@
             {%- endif -%}
             
             {%- if form.posted_successfully? -%}
-            <h3 id="Newsletter-success--{{ section.id }}" tabindex="-1" autofocus>{{ 'newsletter.success' | t }}</h3>
+            <h3>Success</h3>
             {%- endif -%}
-        {% endform %}
+        </form>
         
     </div>
 </submit-component>

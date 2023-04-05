@@ -49,7 +49,7 @@ function AppBridgeLink({ url, children, external, ...rest }) {
  */
 export function PolarisProvider({ children }) {
   return (
-    <AppProvider i18n={translations} linkComponent={AppBridgeLink}>
+    <AppProvider linkComponent={AppBridgeLink}>
       {children}
     </AppProvider>
   );
