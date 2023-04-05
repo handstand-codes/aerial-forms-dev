@@ -45,8 +45,20 @@ function EmbeddedApp() {
 
   return isAuthenticated ? (
     <>
-      <Routes pages={pages} />
-    </>
+    <NavigationMenu
+        navigationLinks={[
+          {
+            label: "Submissions",
+            destination: "/",
+          },
+          {
+            label: "Settings",
+            destination: "/settings",
+          },
+        ]}
+      />
+    <Routes pages={pages} />
+  </>
   ) : (
     <span>Authenticating...</span>
   );

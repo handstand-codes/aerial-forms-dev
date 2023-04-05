@@ -1,63 +1,63 @@
-import React from 'react';
-import {
-  FormLayout,
-  TextField,
-  Button,
-  Stack,
-  Form,
-} from "@shopify/polaris";
-import { useCallback } from "react";
-import { useState } from "react";
+// import React from 'react';
+// import {
+//   FormLayout,
+//   TextField,
+//   Button,
+//   Stack,
+//   Form,
+// } from "@shopify/polaris";
+// import { useCallback } from "react";
+// import { useState } from "react";
 
 
 
-export function EmailForm({ onSave }) {
+// export function EmailForm({ onSave }) {
   
 
-  const [email, setEmail] = useState("");
+//   const [email, setEmail] = useState("");
   
   
-  const updateEmailName = useCallback(
-    (emailName: string) => 
-    {
-      console.log(emailName)
+//   const updateEmailName = useCallback(
+//     (emailName: string) => 
+//     {
+//       console.log(emailName)
       
-      setEmail(emailName)
-    },
-    [],
-  );
+//       setEmail(emailName)
+//     },
+//     [],
+//   );
   
-  const saveEmail = () => {
-    onSave(
-      email
-    );
-  };
+//   const saveEmail = () => {
+//     onSave(
+//       email
+//     );
+//   };
 
 
-  return (
-    <Form onSubmit={saveEmail}>
-      <FormLayout>
+//   return (
+//     <Form onSubmit={saveEmail}>
+//       <FormLayout>
       
-        <TextField
-          label="Email"
-          type="email"
-          name="contact[email]"
-          value={email}
-          autoComplete="off"
-          onChange={updateEmailName}
-          placeholder="Enter customer email"
+//         <TextField
+//           label="Email"
+//           type="email"
+//           name="contact[email]"
+//           value={email}
+//           autoComplete="off"
+//           onChange={updateEmailName}
+//           placeholder="Enter customer email"
           
-        />
+//         />
 
-        <Stack>
-          <Button primary submit>
-            Save email
-          </Button>
-        </Stack>
+//         <Stack>
+//           <Button primary submit>
+//             Save email
+//           </Button>
+//         </Stack>
        
-      </FormLayout>
-    </Form>
-  );
-}
+//       </FormLayout>
+//     </Form>
+//   );
+// }
 
 
