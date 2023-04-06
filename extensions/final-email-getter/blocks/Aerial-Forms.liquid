@@ -1,0 +1,41 @@
+<script src="https://email-getter-v7--development.gadget.app/api/client/web.min.js"  defer="defer"></script>
+<script src="{{ 'Embed.js' | asset_url }}" defer="defer"></script>
+<script src="{{ 'SubmitEmail.js' | asset_url }}" defer="defer"></script>
+
+<div class='aerialForms'></div>
+
+<script type="application/json" class='aerialFormsJson'>
+  {
+    "email": "{{ block.settings.email }}",
+    "success": "{{ block.settings.success }}",
+    "error": "{{ block.settings.error }}",
+    "shopId": "{{ shop.id }}"
+  }
+</script>
+
+{% schema %}
+{
+  "name": "Party",
+  "target": "body",
+  "settings": [
+    {
+      "type": "text",
+      "id": "email",
+      "label": "Email",
+      "default": "Email"
+  },
+  {
+      "type": "text",
+      "id": "success",
+      "label": "Success State",
+      "default": "Success!"
+  },
+  {
+      "type": "text",
+      "id": "error",
+      "label": "Error State",
+      "default": "Error!"
+  }
+  ]
+}
+{% endschema %}

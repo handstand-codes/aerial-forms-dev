@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { api } from "../api";
 import { useFindMany } from "@gadgetinc/react";
 
@@ -19,7 +19,10 @@ export default function HomePage() {
 
 // API call & confirm Shop ID //
   const [data, setData] = useState("")
-  const [emailRecords] = useFindMany(api.email, {
+  const [cursor, setCursor] = useState({ first: 25 });
+
+  const [emailRecords] = useFindMany(api.email, {    
+    ...cursor,
     filter: {
       currentStoreId: {
         equals: data.currentShopId,
@@ -33,7 +36,7 @@ export default function HomePage() {
       createdAt: true,
     },
   });
-
+  
   useEffect(() => {
     // define an async function to make the request
     const customHttpRouteRequest = async () => {
@@ -55,6 +58,18 @@ export default function HomePage() {
       withIllustration
     />
   );
+
+// PAGINATION //
+
+  const getNextPage = useCallback(() => {
+    // use first + after to page forwards
+    setCursor({ first: 25, after: emailRecords.data.endCursor });
+  }, [emailRecords.data]);
+
+  const getPreviousPage = useCallback(() => {
+    // use last + before to page backwards
+    setCursor({ last: 25, before: emailRecords.data.startCursor });
+  }, [emailRecords.data]);
 
 // ROW MARKUP //
 
@@ -95,7 +110,6 @@ export default function HomePage() {
     );
   }
 
-
   return (
     
     <Page>
@@ -112,32 +126,35 @@ export default function HomePage() {
                 selectable={false}
                 >
                 {rowMarkup}
-              </IndexTable>  
+                
+              </IndexTable> 
+               
+                    <br/>
+                    <Stack
+                    distribution="center"
+                    > 
+                      <Stack.Item>
+                        <Pagination
+                          hasPrevious={emailRecords.data.hasPreviousPage}
+                          onPrevious={() => {
+                            
+
+                            getPreviousPage()
+                          }}
+                          hasNext={emailRecords.data.hasNextPage}
+                          onNext={() => {
+
+
+                            getNextPage()
+                            }}
+                        />   
+                      </Stack.Item>               
+                    </Stack> 
+                    <br/>
+                  
             </Card>         
         </Layout.Section>        
       </Layout>
-
-    {emailRecords.data.length > 25 ? (
-
-      <Layout >
-        <Layout.Section>
-          
-            <Pagination
-              label="Search Emails"
-              hasPrevious
-              onPrevious={() => {
-                console.log('Previous');
-              }}
-              hasNext
-              onNext={() => {
-                console.log('Next');
-              }}
-            />
-          
-        </Layout.Section>
-      </Layout> 
-
-    ):( null )}
 
     </Page> 
     

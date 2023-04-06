@@ -4,17 +4,16 @@ import {
     Card,
     TextField,
     Icon,
+    
   } from "@shopify/polaris";
   
-  import {
+import {
     ClipboardMinor,
   } from '@shopify/polaris-icons';
   
-  import Clipboard from 'react-clipboard.js';
+import Clipboard from 'react-clipboard.js';
   
-  
-
-export default function CreateNewQuizPage() {
+export default function SettingsPage() {
 
     return (
 
@@ -23,21 +22,29 @@ export default function CreateNewQuizPage() {
                 <Layout.Section>
                     <Card title="Display the bundle on a page" sectioned>
                         <p>Copy this code and paste it on the pages where you want to show this bundle.</p>
+                        <br/>
+                        
                         <TextField 
-                        readOnly 
-                        value="code goes here"
+                        readOnly
+                        value="<div class='aerialForms'></div>"
                         connectedRight=
                             {
-                            <Clipboard data-clipboard-text="code goes here">
-                                <Icon source={ClipboardMinor}/>
+                            
+                        
+                            <Clipboard data-clipboard-text="<div class='aerialForms'></div>">
+                                
+                                    <Icon source={ClipboardMinor}/>
+                                
                             </Clipboard>
+                            
                             }
                         />
+                        
+                        <br/>
                     </Card>         
                 </Layout.Section>        
             </Layout>
         </Page>
 
     )
-
 }
