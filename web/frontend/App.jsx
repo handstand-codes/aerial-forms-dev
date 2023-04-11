@@ -39,7 +39,7 @@ function EmbeddedApp() {
   // we use `isAuthenticated` to render pages once the OAuth flow is complete!
   const { isAuthenticated } = useGadget();
 
-  console.log(isAuthenticated)
+  // console.log(isAuthenticated)
 
   const pages = import.meta.globEager("./pages/**/!(*.test.[jt]sx)*.([jt]sx)");
 
@@ -50,6 +50,10 @@ function EmbeddedApp() {
           {
             label: "Submissions",
             destination: "/",
+          },
+          {
+            label: "Integrations",
+            destination: "/integrations",
           },
           {
             label: "Settings",

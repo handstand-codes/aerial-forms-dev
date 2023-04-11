@@ -112,50 +112,41 @@ export default function HomePage() {
 
   return (
     
-    <Page>
-      <Layout>
-        <Layout.Section>
-          <Card>
-              <IndexTable
-                itemCount={emailRecords.data?.length}
-                emptyState={emptyStateMarkup}
-                headings={[
-                  {title: 'Customer Emails:'},
-                  {title: 'Created At:'},
-                ]}
-                selectable={false}
-                >
-                {rowMarkup}
-                
-              </IndexTable> 
-               
-                    <br/>
-                    <Stack
-                    distribution="center"
-                    > 
-                      <Stack.Item>
-                        <Pagination
-                          hasPrevious={emailRecords.data.hasPreviousPage}
-                          onPrevious={() => {
-                            
-
-                            getPreviousPage()
-                          }}
-                          hasNext={emailRecords.data.hasNextPage}
-                          onNext={() => {
-
-
-                            getNextPage()
-                            }}
-                        />   
-                      </Stack.Item>               
-                    </Stack> 
-                    <br/>
-                  
-            </Card>         
-        </Layout.Section>        
-      </Layout>
-
+    <Page title="Submissions">
+        <Layout>
+            <Layout.Section>
+                <Card>
+                    <IndexTable
+                      itemCount={emailRecords.data?.length}
+                      emptyState={emptyStateMarkup}
+                      headings={[
+                        {title: 'Customer Emails:'},
+                        {title: 'Created At:'},
+                      ]}
+                      selectable={false}
+                      >
+                      {rowMarkup}
+                      
+                    </IndexTable> 
+                          <br/>
+                          <Stack> 
+                              <Stack.Item>
+                                  <Pagination
+                                    hasPrevious={emailRecords.data.hasPreviousPage}
+                                    onPrevious={() => {
+                                      getPreviousPage()
+                                    }}
+                                    hasNext={emailRecords.data.hasNextPage}
+                                    onNext={() => {
+                                      getNextPage()
+                                      }}
+                                  />   
+                              </Stack.Item>               
+                          </Stack> 
+                          <br/>
+                  </Card>         
+            </Layout.Section>        
+        </Layout>
     </Page> 
     
   );
