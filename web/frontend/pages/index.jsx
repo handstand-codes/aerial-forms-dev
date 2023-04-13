@@ -41,7 +41,7 @@ export default function HomePage() {
     // define an async function to make the request
     const customHttpRouteRequest = async () => {
       // make sure to use your Gadget app domain and route!
-      const result = await api.connection.fetch("https://email-getter-v7--development.gadget.app/custom");
+      const result = await api.connection.fetch("https://aerialforms--development.gadget.app/custom");
       const json = await result.json();
       // use state hooks to handle response data in your component
       setData(json.toString());   

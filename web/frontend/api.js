@@ -1,2 +1,2 @@
-import { Client } from "@gadget-client/email-getter-v7";
+import { Client } from "@gadget-client/aerialforms";
 export const api = new Client();

@@ -59,7 +59,7 @@ export function ClientShopify() {
             setShopifyChecked(startState.enabled)
         ));
         const customHttpRouteRequest = async () => {
-        const result = await api.connection.fetch("https://email-getter-v7--development.gadget.app/custom");
+        const result = await api.connection.fetch("https://aerialforms--development.gadget.app/custom");
         const json = await result.json();
         setData(json.toString());   
         };   
