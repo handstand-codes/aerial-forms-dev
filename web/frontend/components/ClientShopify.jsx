@@ -10,7 +10,7 @@ import {
     Card,
     Checkbox,
     TextContainer,
-    Grid
+    Grid,
   } from "@shopify/polaris";
 
 export function ClientShopify() {
