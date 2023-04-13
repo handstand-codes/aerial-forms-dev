@@ -1,6 +1,7 @@
 import { ClientShopify } from "../components";
 import { ClientKlaviyo } from "../components";
 import { ClientMailchimp } from "../components";
+import { ClientHubspot } from "../components";
 
 import { Page } from "@shopify/polaris";
  
@@ -13,6 +14,7 @@ export default function IntegrationsPage() {
             <ClientShopify />
             <ClientKlaviyo />
             <ClientMailchimp />
+            <ClientHubspot />
                      
         </Page>
   )}
