@@ -12,13 +12,15 @@
     "node": ">= 12.16"
   },
   "dependencies": {
-    "@gadget-client/email-getter-v7": "^1.2134.0",
+    "@gadget-client/email-getter-v7": "^1.2796.0",
     "@gadgetinc/react": "^0.11.0",
     "@gadgetinc/react-shopify-app-bridge": "^0.9.0",
+    "@mailchimp/mailchimp_marketing": "^3.0.80",
     "@shopify/app-bridge": "^3.1.0",
     "@shopify/app-bridge-react": "^3.1.0",
     "@shopify/app-bridge-utils": "^3.1.0",
     "@shopify/polaris": "^9.24.0",
+    "@shopify/shopify-api": "^7.0.0",
     "@vitejs/plugin-react": "1.2.0",
     "clipboard": "^2.0.11",
     "fastify-cors": "^6.0.3",
