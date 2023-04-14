@@ -12,7 +12,8 @@
     "deploy": "shopify app deploy"
   },
   "dependencies": {
-    "@gadget-client/aerialforms": "^1.8.0",
+    "@gadget-client/aerialforms": "^1.134.0",
+    "@hubspot/api-client": "^8.9.0",
     "@shopify/app": "3.44.1",
     "@shopify/cli": "3.44.1",
     "clipboard": "^2.0.11",

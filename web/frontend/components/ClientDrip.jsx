@@ -3,7 +3,7 @@ import { api } from "../api";
 import { useFindMany } from "@gadgetinc/react";
 import { useAction } from "@gadgetinc/react";
 import { useNavigate } from "@shopify/app-bridge-react";
-import { hubspotLogo } from "../assets";
+import { dripLogo } from "../assets";
 
 import { 
     CalloutCard,
@@ -16,18 +16,18 @@ import {
     Grid
   } from "@shopify/polaris";
 
-export function ClientHubspot() {
+export function ClientDrip() {
 
     const navigate = useNavigate();
     const [data, setData] = useState("");
-    const [showHubspot, setShowHubspot] = useState(false);
-    const [hubspotChecked, setHubspotChecked] = useState();
-    const [hubspotApiKey, setHubspotApiKey] = useState('');
-    const [hubspotServer, setHubspotServer] = useState('');
+    const [showDrip, setShowDrip] = useState(false);
+    const [dripChecked, setDripChecked] = useState();
+    const [dripApiKey, setDripApiKey] = useState('');
+    const [dripServer, setDripServer] = useState('');
    
-    const [clientHubspotResponse, updateClientHubspot] = useAction(api.clientHubspot.update);
+    const [clientDripResponse, updateClientDrip] = useAction(api.clientDrip.update);
      
-    const [clientHubspot] = useFindMany(api.clientHubspot, {    
+    const [clientDrip] = useFindMany(api.clientDrip, {    
         filter: {
             currentStoreId: {
               equals: data.currentShopId,
@@ -35,56 +35,56 @@ export function ClientHubspot() {
           }
       });
 
-    const handleHubspotApiKeyChange = useCallback((
+    const handleDripApiKeyChange = useCallback((
         newApiKey
-        ) => setHubspotApiKey(newApiKey), []);
+        ) => setDripApiKey(newApiKey), []);
 
-    const handleHubspotServerIdChange = useCallback((
+    const handleDripServerIdChange = useCallback((
         newServer
-        ) => setHubspotServer(newServer), []);
+        ) => setDripServer(newServer), []);
 
-    const enableHubspot = useCallback(
-        () => setShowHubspot((showHubspot) => !showHubspot),       
+    const enableDrip = useCallback(
+        () => setShowDrip((showDrip) => !showDrip),       
         []);
 
     // Update Enabled TRUE/FALSE //
 
-    const saveHubspotCheck = useCallback(
+    const saveDripCheck = useCallback(
         async (id, enabled) => {
             const changed = !enabled
-            setHubspotChecked(changed)
-            const clientHubspot = 
+            setDripChecked(changed)
+            const clientDrip = 
                 {
                 enabled: changed
                 }               
-    await updateClientHubspot({ id, clientHubspot });            
+    await updateClientDrip({ id, clientDrip });            
         }
     );  
 
     // Update API Key / Server # //
 
-    const saveHubspotInfo = useCallback(
+    const saveDripInfo = useCallback(
         async (id) => {
-            const clientHubspot = 
+            const clientDrip = 
             {
-                apiKey: hubspotApiKey,
-                server: hubspotServer
+                apiKey: dripApiKey,
+                server: dripServer
             }               
-            await updateClientHubspot({ id, clientHubspot });         
+            await updateClientDrip({ id, clientDrip });         
             }
         );  
 
-    if (clientHubspotResponse.fetching || clientHubspotResponse.data) {
-        if (clientHubspotResponse.data) {
+    if (clientDripResponse.fetching || clientDripResponse.data) {
+        if (clientDripResponse.data) {
         navigate("/integrations");
         }
     };
 
     useEffect(() => {
-        clientHubspot.data?.map((startState, i) => (
-            setHubspotChecked(startState.enabled),
-            setHubspotApiKey(startState.apiKey),
-            setHubspotServer(startState.server)
+        clientDrip.data?.map((startState, i) => (
+            setDripChecked(startState.enabled),
+            setDripApiKey(startState.apiKey),
+            setDripServer(startState.server)
          ));  
         const customHttpRouteRequest = async () => {
           const result = await api.connection.fetch("https://aerialforms--development.gadget.app/custom");
@@ -94,19 +94,19 @@ export function ClientHubspot() {
         customHttpRouteRequest().catch(console.error);
       }, []);
 
-    const hubspotMarkup = (
-        showHubspot ? (
+    const dripMarkup = (
+        showDrip ? (
             <Grid>
                 <Grid.Cell columnSpan={{xs: 6, sm: 3, md: 3, lg: 6, xl: 6}}>           
                     <LegacyCard.Section>
-                        {clientHubspot.data?.map((enabled, i) => (
+                        {clientDrip.data?.map((enabled, i) => (
                             <Checkbox
                                 id={enabled.id}
                                 key={enabled.id}
                                 position={i}
                                 label="Enabled"
-                                checked={hubspotChecked}
-                                onChange={() => saveHubspotCheck(enabled.id, enabled.enabled)}
+                                checked={dripChecked}
+                                onChange={() => saveDripCheck(enabled.id, enabled.enabled)}
                             />                                
                         ))}
                     </LegacyCard.Section>  
@@ -114,25 +114,25 @@ export function ClientHubspot() {
                 <Grid.Cell columnSpan={{xs: 6, sm: 3, md: 3, lg: 6, xl: 6}}>              
                     
                     <LegacyCard.Section>
-                    {clientHubspot.data?.map((info, i) => (
+                    {clientDrip.data?.map((info, i) => (
                     <Form 
                         id={info.id}
                         key={info.id}
                         position={i}
-                        onSubmit={() => saveHubspotInfo(info.id)}>
+                        onSubmit={() => saveDripInfo(info.id)}>
                         <FormLayout>
                             <TextField
-                                value={hubspotApiKey}
+                                value={dripApiKey}
                                 label="API Key"
                                 placeholder={info.apiKey}
-                                onChange={handleHubspotApiKeyChange}
+                                onChange={handleDripApiKeyChange}
                                 autoComplete='off'
                             />
                             <TextField
-                                value={hubspotServer}
+                                value={dripServer}
                                 label="Server"
                                 placeholder={info.server}
-                                onChange={handleHubspotServerIdChange}
+                                onChange={handleDripServerIdChange}
                                 autoComplete='off'
                             />
                             <Button primary submit>Submit</Button>
@@ -150,13 +150,13 @@ export function ClientHubspot() {
 
         <>
             <CalloutCard
-                illustration={ hubspotLogo }
+                illustration={ dripLogo }
                 primaryAction={{
-                    content: 'Hubspot Integrations',
-                    onAction: () => enableHubspot()
+                    content: 'Drip Integrations',
+                    onAction: () => enableDrip()
                   }} 
             >
-            {hubspotMarkup}  
+            {dripMarkup}  
             </CalloutCard>  
         </>
 
