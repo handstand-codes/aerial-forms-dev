@@ -22,8 +22,8 @@ export function ClientDrip() {
     const [data, setData] = useState("");
     const [showDrip, setShowDrip] = useState(false);
     const [dripChecked, setDripChecked] = useState();
-    const [dripApiKey, setDripApiKey] = useState('');
-    const [dripServer, setDripServer] = useState('');
+    const [dripToken, setDripToken] = useState('');
+    const [dripAccountId, setDripAccountId] = useState('');
    
     const [clientDripResponse, updateClientDrip] = useAction(api.clientDrip.update);
      
@@ -35,13 +35,13 @@ export function ClientDrip() {
           }
       });
 
-    const handleDripApiKeyChange = useCallback((
-        newApiKey
-        ) => setDripApiKey(newApiKey), []);
+    const handleDripTokenChange = useCallback((
+        newToken
+        ) => setDripToken(newToken), []);
 
-    const handleDripServerIdChange = useCallback((
-        newServer
-        ) => setDripServer(newServer), []);
+    const handleDripAccountIdChange = useCallback((
+        newAccountId
+        ) => setDripAccountId(newAccountId), []);
 
     const enableDrip = useCallback(
         () => setShowDrip((showDrip) => !showDrip),       
@@ -67,8 +67,8 @@ export function ClientDrip() {
         async (id) => {
             const clientDrip = 
             {
-                apiKey: dripApiKey,
-                server: dripServer
+                apiKey: dripToken,
+                server: dripAccountId
             }               
             await updateClientDrip({ id, clientDrip });         
             }
@@ -83,8 +83,8 @@ export function ClientDrip() {
     useEffect(() => {
         clientDrip.data?.map((startState, i) => (
             setDripChecked(startState.enabled),
-            setDripApiKey(startState.apiKey),
-            setDripServer(startState.server)
+            setDripToken(startState.token),
+            setDripAccountId(startState.accountId)
          ));  
         const customHttpRouteRequest = async () => {
           const result = await api.connection.fetch("https://aerialforms--development.gadget.app/custom");
@@ -96,9 +96,8 @@ export function ClientDrip() {
 
     const dripMarkup = (
         showDrip ? (
-            <Grid>
-                <Grid.Cell columnSpan={{xs: 6, sm: 3, md: 3, lg: 6, xl: 6}}>           
-                    <LegacyCard.Section>
+            <FormLayout>           
+                <FormLayout.Group>
                         {clientDrip.data?.map((enabled, i) => (
                             <Checkbox
                                 id={enabled.id}
@@ -108,12 +107,8 @@ export function ClientDrip() {
                                 checked={dripChecked}
                                 onChange={() => saveDripCheck(enabled.id, enabled.enabled)}
                             />                                
-                        ))}
-                    </LegacyCard.Section>  
-                </Grid.Cell>
-                <Grid.Cell columnSpan={{xs: 6, sm: 3, md: 3, lg: 6, xl: 6}}>              
+                        ))}          
                     
-                    <LegacyCard.Section>
                     {clientDrip.data?.map((info, i) => (
                     <Form 
                         id={info.id}
@@ -122,17 +117,17 @@ export function ClientDrip() {
                         onSubmit={() => saveDripInfo(info.id)}>
                         <FormLayout>
                             <TextField
-                                value={dripApiKey}
-                                label="API Key"
-                                placeholder={info.apiKey}
-                                onChange={handleDripApiKeyChange}
+                                value={dripToken}
+                                label="Token"
+                                placeholder={info.token}
+                                onChange={handleDripTokenChange}
                                 autoComplete='off'
                             />
                             <TextField
-                                value={dripServer}
-                                label="Server"
-                                placeholder={info.server}
-                                onChange={handleDripServerIdChange}
+                                value={dripAccountId}
+                                label="Account ID"
+                                placeholder={info.accountId}
+                                onChange={handleDripAccountIdChange}
                                 autoComplete='off'
                             />
                             <Button primary submit>Submit</Button>
@@ -140,9 +135,9 @@ export function ClientDrip() {
                     </Form>
                     ))}
                     
-                    </LegacyCard.Section>                
-                </Grid.Cell>
-            </Grid>
+                </FormLayout.Group>                
+            </FormLayout> 
+                 
         ):( null )
     )
 

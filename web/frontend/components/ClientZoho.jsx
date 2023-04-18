@@ -7,13 +7,11 @@ import { zohoLogo } from "../assets";
 
 import { 
     CalloutCard,
-    LegacyCard,
     Checkbox,
     Button,
     Form,
     FormLayout,
-    TextField,
-    Grid
+    TextField
   } from "@shopify/polaris";
 
 export function ClientZoho() {
@@ -22,8 +20,7 @@ export function ClientZoho() {
     const [data, setData] = useState("");
     const [showZoho, setShowZoho] = useState(false);
     const [zohoChecked, setZohoChecked] = useState();
-    const [zohoApiKey, setZohoApiKey] = useState('');
-    const [zohoServer, setZohoServer] = useState('');
+    const [zohoListKey, setZohoListKey] = useState('');
    
     const [clientZohoResponse, updateClientZoho] = useAction(api.clientZoho.update);
      
@@ -35,13 +32,9 @@ export function ClientZoho() {
           }
       });
 
-    const handleZohoApiKeyChange = useCallback((
-        newApiKey
-        ) => setZohoApiKey(newApiKey), []);
-
-    const handleZohoServerIdChange = useCallback((
-        newServer
-        ) => setZohoServer(newServer), []);
+    const handleZohoListKeyChange = useCallback((
+        newListKey
+        ) => setZohoListKey(newListKey), []);
 
     const enableZoho = useCallback(
         () => setShowZoho((showZoho) => !showZoho),       
@@ -67,8 +60,7 @@ export function ClientZoho() {
         async (id) => {
             const clientZoho = 
             {
-                apiKey: zohoApiKey,
-                server: zohoServer
+                listKey: zohoListKey
             }               
             await updateClientZoho({ id, clientZoho });         
             }
@@ -83,8 +75,7 @@ export function ClientZoho() {
     useEffect(() => {
         clientZoho.data?.map((startState, i) => (
             setZohoChecked(startState.enabled),
-            setZohoApiKey(startState.apiKey),
-            setZohoServer(startState.server)
+            setZohoListKey(startState.listKey)
          ));  
         const customHttpRouteRequest = async () => {
           const result = await api.connection.fetch("https://aerialforms--development.gadget.app/custom");
@@ -96,9 +87,8 @@ export function ClientZoho() {
 
     const zohoMarkup = (
         showZoho ? (
-            <Grid>
-                <Grid.Cell columnSpan={{xs: 6, sm: 3, md: 3, lg: 6, xl: 6}}>           
-                    <LegacyCard.Section>
+            <FormLayout>           
+                <FormLayout.Group>
                         {clientZoho.data?.map((enabled, i) => (
                             <Checkbox
                                 id={enabled.id}
@@ -109,11 +99,7 @@ export function ClientZoho() {
                                 onChange={() => saveZohoCheck(enabled.id, enabled.enabled)}
                             />                                
                         ))}
-                    </LegacyCard.Section>  
-                </Grid.Cell>
-                <Grid.Cell columnSpan={{xs: 6, sm: 3, md: 3, lg: 6, xl: 6}}>              
-                    
-                    <LegacyCard.Section>
+                            
                     {clientZoho.data?.map((info, i) => (
                     <Form 
                         id={info.id}
@@ -122,17 +108,10 @@ export function ClientZoho() {
                         onSubmit={() => saveZohoInfo(info.id)}>
                         <FormLayout>
                             <TextField
-                                value={zohoApiKey}
-                                label="API Key"
-                                placeholder={info.apiKey}
-                                onChange={handleZohoApiKeyChange}
-                                autoComplete='off'
-                            />
-                            <TextField
-                                value={zohoServer}
-                                label="Server"
-                                placeholder={info.server}
-                                onChange={handleZohoServerIdChange}
+                                value={zohoListKey}
+                                label="List Key"
+                                placeholder={info.listKey}
+                                onChange={handleZohoListKeyChange}
                                 autoComplete='off'
                             />
                             <Button primary submit>Submit</Button>
@@ -140,9 +119,9 @@ export function ClientZoho() {
                     </Form>
                     ))}
                     
-                    </LegacyCard.Section>                
-                </Grid.Cell>
-            </Grid>
+                </FormLayout.Group>                
+            </FormLayout>
+            
         ):( null )
     )
 

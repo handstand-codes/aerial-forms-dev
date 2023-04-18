@@ -7,10 +7,9 @@ import { shopifyLogo } from "../assets";
 
 import { 
     CalloutCard,
-    Card,
+    FormLayout,
     Checkbox,
-    TextContainer,
-    Grid,
+    
   } from "@shopify/polaris";
 
 export function ClientShopify() {
@@ -68,24 +67,23 @@ export function ClientShopify() {
 
     const shopifyMarkup = (
         showShopify ? (
-            <Grid>
-                <Grid.Cell columnSpan={{xs: 6, sm: 3, md: 3, lg: 6, xl: 6}}>
-                    <Card.Section>
-                        <TextContainer>
-                            {shopifyEnabled.data?.map((enabled, i) => (
-                                <Checkbox
-                                    id={enabled.id}
-                                    key={enabled.id}
-                                    position={i}
-                                    label="Enabled"
-                                    checked={shopifyChecked}
-                                    onChange={() => saveShopifyCheck(enabled.id, enabled.enabled)}
-                                />                                
-                            ))}
-                        </TextContainer>
-                    </Card.Section>                         
-                </Grid.Cell>   
-            </Grid>
+            <FormLayout>           
+                <FormLayout.Group>
+                    
+                        {shopifyEnabled.data?.map((enabled, i) => (
+                            <Checkbox
+                                id={enabled.id}
+                                key={enabled.id}
+                                position={i}
+                                label="Enabled"
+                                checked={shopifyChecked}
+                                onChange={() => saveShopifyCheck(enabled.id, enabled.enabled)}
+                            />                                
+                        ))}
+                    
+                </FormLayout.Group>                
+            </FormLayout>
+            
         ):( null )
     )
 

@@ -7,13 +7,11 @@ import { mailchimpLogo } from "../assets";
 
 import { 
     CalloutCard,
-    Card,
     Checkbox,
     Button,
     Form,
     FormLayout,
-    TextField,
-    Grid
+    TextField
   } from "@shopify/polaris";
 
 export function ClientMailchimp() {
@@ -24,6 +22,7 @@ export function ClientMailchimp() {
     const [mailchimpChecked, setMailchimpChecked] = useState();
     const [mailchimpApiKey, setMailchimpApiKey] = useState('');
     const [mailchimpServer, setMailchimpServer] = useState('');
+    const [mailchimpAudienceId, setMailchimpAudienceId] = useState('');
    
     const [mailchimpEnabledResponse, updateMailchimpEnabled] = useAction(api.clientMailchimp.update);
      
@@ -42,6 +41,10 @@ export function ClientMailchimp() {
     const handleMailchimpServerIdChange = useCallback((
         newServer
         ) => setMailchimpServer(newServer), []);
+
+    const handleMailchimpAudienceIdChange = useCallback((
+        newAudienceId
+        ) => setMailchimpAudienceId(newAudienceId), []);
 
     const enableMailchimp = useCallback(
         () => setShowMailchimp((showMailchimp) => !showMailchimp),       
@@ -68,7 +71,8 @@ export function ClientMailchimp() {
             const clientMailchimp = 
             {
                 apiKey: mailchimpApiKey,
-                server: mailchimpServer
+                server: mailchimpServer,
+                audienceId: mailchimpAudienceId
             }               
             await updateMailchimpEnabled({ id, clientMailchimp });         
             }
@@ -84,7 +88,8 @@ export function ClientMailchimp() {
         mailchimpEnabled.data?.map((startState, i) => (
             setMailchimpChecked(startState.enabled),
             setMailchimpApiKey(startState.apiKey),
-            setMailchimpServer(startState.server)
+            setMailchimpServer(startState.server),
+            setMailchimpAudienceId(startState.audienceId)
          ));  
         const customHttpRouteRequest = async () => {
           const result = await api.connection.fetch("https://aerialforms--development.gadget.app/custom");
@@ -96,9 +101,8 @@ export function ClientMailchimp() {
 
     const mailchimpMarkup = (
         showMailchimp ? (
-            <Grid>
-                <Grid.Cell columnSpan={{xs: 6, sm: 3, md: 3, lg: 6, xl: 6}}>           
-                    <Card.Section>
+            <FormLayout>           
+                <FormLayout.Group>
                         {mailchimpEnabled.data?.map((enabled, i) => (
                             <Checkbox
                                 id={enabled.id}
@@ -109,11 +113,7 @@ export function ClientMailchimp() {
                                 onChange={() => saveMailchimpCheck(enabled.id, enabled.enabled)}
                             />                                
                         ))}
-                    </Card.Section>  
-                </Grid.Cell>
-                <Grid.Cell columnSpan={{xs: 6, sm: 3, md: 3, lg: 6, xl: 6}}>              
-                    
-                    <Card.Section>
+                            
                     {mailchimpEnabled.data?.map((info, i) => (
                     <Form 
                         id={info.id}
@@ -135,14 +135,21 @@ export function ClientMailchimp() {
                                 onChange={handleMailchimpServerIdChange}
                                 autoComplete='off'
                             />
+                            <TextField
+                                value={mailchimpAudienceId}
+                                label="Audience ID"
+                                placeholder={info.audienceId}
+                                onChange={handleMailchimpAudienceIdChange}
+                                autoComplete='off'
+                            />
                             <Button primary submit>Submit</Button>
                         </FormLayout>
                     </Form>
                     ))}
                     
-                    </Card.Section>                
-                </Grid.Cell>
-            </Grid>
+                </FormLayout.Group>                
+            </FormLayout>
+            
         ):( null )
     )
 

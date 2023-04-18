@@ -7,13 +7,11 @@ import { klaviyoLogo } from "../assets";
 
 import { 
     CalloutCard,
-    Card,
     Button,
     Checkbox,
     Form,
     FormLayout,
-    TextField,
-    Grid
+    TextField
   } from "@shopify/polaris";
 
 export function ClientKlaviyo() {
@@ -97,9 +95,8 @@ export function ClientKlaviyo() {
 
     const klaviyoMarkup = (
         showKlaviyo ? (
-            <Grid>
-                <Grid.Cell columnSpan={{xs: 6, sm: 3, md: 3, lg: 6, xl: 6}}>
-                    <Card.Section>
+            <FormLayout>           
+                <FormLayout.Group>
                         
                         {klaviyoRecords.data?.map((enabled, i) => (
                             <Checkbox
@@ -111,13 +108,7 @@ export function ClientKlaviyo() {
                             onChange={() => saveCheck(enabled.id, enabled.enabled)}
                         />    
                             ))}
-                                                                               
-                    </Card.Section>                         
-                </Grid.Cell> 
-
-                <Grid.Cell columnSpan={{xs: 6, sm: 3, md: 3, lg: 6, xl: 6}}>              
-                    
-                    <Card.Section>
+                                                                        
                     {klaviyoRecords.data?.map((info, i) => (
                     <Form 
                         id={info.id}
@@ -144,10 +135,9 @@ export function ClientKlaviyo() {
                     </Form>
                     ))}
                     
-                    </Card.Section>                
-                </Grid.Cell>
+                </FormLayout.Group>                
+            </FormLayout>
                                                 
-            </Grid>
             ):( null )
     )
 

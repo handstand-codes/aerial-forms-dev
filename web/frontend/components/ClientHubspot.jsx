@@ -7,13 +7,11 @@ import { hubspotLogo } from "../assets";
 
 import { 
     CalloutCard,
-    LegacyCard,
     Checkbox,
     Button,
     Form,
     FormLayout,
-    TextField,
-    Grid
+    TextField
   } from "@shopify/polaris";
 
 export function ClientHubspot() {
@@ -22,7 +20,7 @@ export function ClientHubspot() {
     const [data, setData] = useState("");
     const [showHubspot, setShowHubspot] = useState(false);
     const [hubspotChecked, setHubspotChecked] = useState();
-    const [hubspotApiKey, setHubspotApiKey] = useState('');
+    const [hubspotAccessToken, setHubspotAccessToken] = useState('');
     const [hubspotServer, setHubspotServer] = useState('');
    
     const [clientHubspotResponse, updateClientHubspot] = useAction(api.clientHubspot.update);
@@ -35,9 +33,9 @@ export function ClientHubspot() {
           }
       });
 
-    const handleHubspotApiKeyChange = useCallback((
-        newApiKey
-        ) => setHubspotApiKey(newApiKey), []);
+    const handleHubspotAccessTokenChange = useCallback((
+        newAccessToken
+        ) => setHubspotAccessToken(newAccessToken), []);
 
     const handleHubspotServerIdChange = useCallback((
         newServer
@@ -67,7 +65,7 @@ export function ClientHubspot() {
         async (id) => {
             const clientHubspot = 
             {
-                apiKey: hubspotApiKey,
+                accessToken: hubspotAccessToken,
                 server: hubspotServer
             }               
             await updateClientHubspot({ id, clientHubspot });         
@@ -83,7 +81,7 @@ export function ClientHubspot() {
     useEffect(() => {
         clientHubspot.data?.map((startState, i) => (
             setHubspotChecked(startState.enabled),
-            setHubspotApiKey(startState.apiKey),
+            setHubspotAccessToken(startState.accessToken),
             setHubspotServer(startState.server)
          ));  
         const customHttpRouteRequest = async () => {
@@ -96,9 +94,8 @@ export function ClientHubspot() {
 
     const hubspotMarkup = (
         showHubspot ? (
-            <Grid>
-                <Grid.Cell columnSpan={{xs: 6, sm: 3, md: 3, lg: 6, xl: 6}}>           
-                    <LegacyCard.Section>
+            <FormLayout>           
+                <FormLayout.Group>
                         {clientHubspot.data?.map((enabled, i) => (
                             <Checkbox
                                 id={enabled.id}
@@ -109,11 +106,7 @@ export function ClientHubspot() {
                                 onChange={() => saveHubspotCheck(enabled.id, enabled.enabled)}
                             />                                
                         ))}
-                    </LegacyCard.Section>  
-                </Grid.Cell>
-                <Grid.Cell columnSpan={{xs: 6, sm: 3, md: 3, lg: 6, xl: 6}}>              
-                    
-                    <LegacyCard.Section>
+                            
                     {clientHubspot.data?.map((info, i) => (
                     <Form 
                         id={info.id}
@@ -122,27 +115,27 @@ export function ClientHubspot() {
                         onSubmit={() => saveHubspotInfo(info.id)}>
                         <FormLayout>
                             <TextField
-                                value={hubspotApiKey}
-                                label="API Key"
-                                placeholder={info.apiKey}
-                                onChange={handleHubspotApiKeyChange}
+                                value={hubspotAccessToken}
+                                label="Access Token"
+                                placeholder={info.accessToken}
+                                onChange={handleHubspotAccessTokenChange}
                                 autoComplete='off'
                             />
-                            <TextField
+                            {/* <TextField
                                 value={hubspotServer}
                                 label="Server"
                                 placeholder={info.server}
                                 onChange={handleHubspotServerIdChange}
                                 autoComplete='off'
-                            />
+                            /> */}
                             <Button primary submit>Submit</Button>
                         </FormLayout>
                     </Form>
                     ))}
                     
-                    </LegacyCard.Section>                
-                </Grid.Cell>
-            </Grid>
+                </FormLayout.Group>                
+            </FormLayout>
+
         ):( null )
     )
 
