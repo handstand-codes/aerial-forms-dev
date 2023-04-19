@@ -11,15 +11,16 @@ import {
     Button,
     Form,
     FormLayout,
-    TextField
+    TextField,
+    Text
   } from "@shopify/polaris";
 
 export function ClientZoho() {
 
     const navigate = useNavigate();
     const [data, setData] = useState("");
-    const [showZoho, setShowZoho] = useState(false);
     const [zohoChecked, setZohoChecked] = useState();
+    const [showZoho, setShowZoho] = useState();
     const [zohoListKey, setZohoListKey] = useState('');
    
     const [clientZohoResponse, updateClientZoho] = useAction(api.clientZoho.update);
@@ -75,7 +76,8 @@ export function ClientZoho() {
     useEffect(() => {
         clientZoho.data?.map((startState, i) => (
             setZohoChecked(startState.enabled),
-            setZohoListKey(startState.listKey)
+            setZohoListKey(startState.listKey),
+            setShowZoho(startState.enabled)
          ));  
         const customHttpRouteRequest = async () => {
           const result = await api.connection.fetch("https://aerialforms--development.gadget.app/custom");
@@ -89,7 +91,13 @@ export function ClientZoho() {
         showZoho ? (
             <FormLayout>           
                 <FormLayout.Group>
-                        {clientZoho.data?.map((enabled, i) => (
+                    <Text 
+                        color="success"
+                        variant="heading4xl" as="h1">Zoho Enabled</Text>
+                        
+                        
+                        
+                        {/* {clientZoho.data?.map((enabled, i) => (
                             <Checkbox
                                 id={enabled.id}
                                 key={enabled.id}
@@ -98,7 +106,8 @@ export function ClientZoho() {
                                 checked={zohoChecked}
                                 onChange={() => saveZohoCheck(enabled.id, enabled.enabled)}
                             />                                
-                        ))}
+                        ))} */}
+
                             
                     {clientZoho.data?.map((info, i) => (
                     <Form 
@@ -114,7 +123,7 @@ export function ClientZoho() {
                                 onChange={handleZohoListKeyChange}
                                 autoComplete='off'
                             />
-                            <Button primary submit>Submit</Button>
+                            <Button monochrome size="slim" submit>Update</Button>
                         </FormLayout>
                     </Form>
                     ))}
@@ -122,21 +131,24 @@ export function ClientZoho() {
                 </FormLayout.Group>                
             </FormLayout>
             
-        ):( null )
+        ):( <Text 
+                variant="heading2xl" as="h1">Zoho</Text> )
     )
 
     return (
 
         <>
+        {clientZoho.data?.map((enabled, i) => (
             <CalloutCard
                 illustration={ zohoLogo }
                 primaryAction={{
-                    content: 'Zoho Integrations',
-                    onAction: () => enableZoho()
-                  }} 
+                    content: (showZoho ? (<Text color="critical" fontWeight="bold">Disable</Text>) : (<Text color="success" fontWeight="bold">Enable</Text>)),
+                    onAction: () => (enableZoho(), saveZohoCheck(enabled.id, enabled.enabled))
+                }} 
             >
             {zohoMarkup}  
             </CalloutCard>  
+        ))}
         </>
 
   )}

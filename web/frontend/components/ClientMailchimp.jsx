@@ -7,7 +7,7 @@ import { mailchimpLogo } from "../assets";
 
 import { 
     CalloutCard,
-    Checkbox,
+    Text,
     Button,
     Form,
     FormLayout,
@@ -18,8 +18,8 @@ export function ClientMailchimp() {
 
     const navigate = useNavigate();
     const [data, setData] = useState("");
-    const [showMailchimp, setShowMailchimp] = useState(false);
     const [mailchimpChecked, setMailchimpChecked] = useState();
+    const [showMailchimp, setShowMailchimp] = useState();
     const [mailchimpApiKey, setMailchimpApiKey] = useState('');
     const [mailchimpServer, setMailchimpServer] = useState('');
     const [mailchimpAudienceId, setMailchimpAudienceId] = useState('');
@@ -89,7 +89,8 @@ export function ClientMailchimp() {
             setMailchimpChecked(startState.enabled),
             setMailchimpApiKey(startState.apiKey),
             setMailchimpServer(startState.server),
-            setMailchimpAudienceId(startState.audienceId)
+            setMailchimpAudienceId(startState.audienceId),
+            setShowMailchimp(startState.enabled)
          ));  
         const customHttpRouteRequest = async () => {
           const result = await api.connection.fetch("https://aerialforms--development.gadget.app/custom");
@@ -103,16 +104,9 @@ export function ClientMailchimp() {
         showMailchimp ? (
             <FormLayout>           
                 <FormLayout.Group>
-                        {mailchimpEnabled.data?.map((enabled, i) => (
-                            <Checkbox
-                                id={enabled.id}
-                                key={enabled.id}
-                                position={i}
-                                label="Enabled"
-                                checked={mailchimpChecked}
-                                onChange={() => saveMailchimpCheck(enabled.id, enabled.enabled)}
-                            />                                
-                        ))}
+                    <Text 
+                        color="success"
+                        variant="heading4xl" as="h1">Mailchimp Enabled</Text>
                             
                     {mailchimpEnabled.data?.map((info, i) => (
                     <Form 
@@ -142,7 +136,7 @@ export function ClientMailchimp() {
                                 onChange={handleMailchimpAudienceIdChange}
                                 autoComplete='off'
                             />
-                            <Button primary submit>Submit</Button>
+                            <Button monochrome size="slim" submit>Update</Button>
                         </FormLayout>
                     </Form>
                     ))}
@@ -150,21 +144,24 @@ export function ClientMailchimp() {
                 </FormLayout.Group>                
             </FormLayout>
             
-        ):( null )
+        ):( <Text 
+            variant="heading2xl" as="h1">Mailchimp</Text> )
     )
 
     return (
 
         <>
+        {mailchimpEnabled.data?.map((enabled, i) => (
             <CalloutCard
                 illustration={ mailchimpLogo }
                 primaryAction={{
-                    content: 'Mailchimp Integrations',
-                    onAction: () => enableMailchimp()
-                  }} 
+                    content: (showMailchimp ? (<Text color="critical" fontWeight="bold">Disable</Text>) : (<Text color="success" fontWeight="bold">Enable</Text>)),
+                    onAction: () => (enableMailchimp(), saveMailchimpCheck(enabled.id, enabled.enabled))
+                }} 
             >
             {mailchimpMarkup}  
-            </CalloutCard>  
+            </CalloutCard> 
+        ))} 
         </>
 
   )}

@@ -7,7 +7,7 @@ import { hubspotLogo } from "../assets";
 
 import { 
     CalloutCard,
-    Checkbox,
+    Text,
     Button,
     Form,
     FormLayout,
@@ -18,8 +18,8 @@ export function ClientHubspot() {
 
     const navigate = useNavigate();
     const [data, setData] = useState("");
-    const [showHubspot, setShowHubspot] = useState(false);
     const [hubspotChecked, setHubspotChecked] = useState();
+    const [showHubspot, setShowHubspot] = useState(false);
     const [hubspotAccessToken, setHubspotAccessToken] = useState('');
     const [hubspotServer, setHubspotServer] = useState('');
    
@@ -82,7 +82,8 @@ export function ClientHubspot() {
         clientHubspot.data?.map((startState, i) => (
             setHubspotChecked(startState.enabled),
             setHubspotAccessToken(startState.accessToken),
-            setHubspotServer(startState.server)
+            setHubspotServer(startState.server),
+            setShowHubspot(startState.enabled)
          ));  
         const customHttpRouteRequest = async () => {
           const result = await api.connection.fetch("https://aerialforms--development.gadget.app/custom");
@@ -96,17 +97,10 @@ export function ClientHubspot() {
         showHubspot ? (
             <FormLayout>           
                 <FormLayout.Group>
-                        {clientHubspot.data?.map((enabled, i) => (
-                            <Checkbox
-                                id={enabled.id}
-                                key={enabled.id}
-                                position={i}
-                                label="Enabled"
-                                checked={hubspotChecked}
-                                onChange={() => saveHubspotCheck(enabled.id, enabled.enabled)}
-                            />                                
-                        ))}
-                            
+                    <Text 
+                        color="success"
+                        variant="heading4xl" as="h1">Hubspot Enabled</Text>
+                                       
                     {clientHubspot.data?.map((info, i) => (
                     <Form 
                         id={info.id}
@@ -121,14 +115,7 @@ export function ClientHubspot() {
                                 onChange={handleHubspotAccessTokenChange}
                                 autoComplete='off'
                             />
-                            {/* <TextField
-                                value={hubspotServer}
-                                label="Server"
-                                placeholder={info.server}
-                                onChange={handleHubspotServerIdChange}
-                                autoComplete='off'
-                            /> */}
-                            <Button primary submit>Submit</Button>
+                            <Button monochrome size="slim" submit>Update</Button>
                         </FormLayout>
                     </Form>
                     ))}
@@ -136,21 +123,24 @@ export function ClientHubspot() {
                 </FormLayout.Group>                
             </FormLayout>
 
-        ):( null )
+        ):( <Text 
+            variant="heading2xl" as="h1">Hubspot</Text> )
     )
 
     return (
 
         <>
+        {clientHubspot.data?.map((enabled, i) => (
             <CalloutCard
                 illustration={ hubspotLogo }
                 primaryAction={{
-                    content: 'Hubspot Integrations',
-                    onAction: () => enableHubspot()
-                  }} 
+                    content: (showHubspot ? (<Text color="critical" fontWeight="bold">Disable</Text>) : (<Text color="success" fontWeight="bold">Enable</Text>)),
+                    onAction: () => (enableHubspot(), saveHubspotCheck(enabled.id, enabled.enabled))
+                }} 
             >
             {hubspotMarkup}  
-            </CalloutCard>  
+            </CalloutCard>
+        ))}  
         </>
 
   )}

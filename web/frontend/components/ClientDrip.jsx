@@ -7,21 +7,19 @@ import { dripLogo } from "../assets";
 
 import { 
     CalloutCard,
-    LegacyCard,
-    Checkbox,
+    Text,
     Button,
     Form,
     FormLayout,
-    TextField,
-    Grid
+    TextField
   } from "@shopify/polaris";
 
 export function ClientDrip() {
 
     const navigate = useNavigate();
     const [data, setData] = useState("");
-    const [showDrip, setShowDrip] = useState(false);
     const [dripChecked, setDripChecked] = useState();
+    const [showDrip, setShowDrip] = useState();
     const [dripToken, setDripToken] = useState('');
     const [dripAccountId, setDripAccountId] = useState('');
    
@@ -84,7 +82,8 @@ export function ClientDrip() {
         clientDrip.data?.map((startState, i) => (
             setDripChecked(startState.enabled),
             setDripToken(startState.token),
-            setDripAccountId(startState.accountId)
+            setDripAccountId(startState.accountId),
+            setShowDrip(startState.enabled)
          ));  
         const customHttpRouteRequest = async () => {
           const result = await api.connection.fetch("https://aerialforms--development.gadget.app/custom");
@@ -98,16 +97,9 @@ export function ClientDrip() {
         showDrip ? (
             <FormLayout>           
                 <FormLayout.Group>
-                        {clientDrip.data?.map((enabled, i) => (
-                            <Checkbox
-                                id={enabled.id}
-                                key={enabled.id}
-                                position={i}
-                                label="Enabled"
-                                checked={dripChecked}
-                                onChange={() => saveDripCheck(enabled.id, enabled.enabled)}
-                            />                                
-                        ))}          
+                    <Text 
+                        color="success"
+                        variant="heading4xl" as="h1">Drip Enabled</Text>     
                     
                     {clientDrip.data?.map((info, i) => (
                     <Form 
@@ -130,7 +122,7 @@ export function ClientDrip() {
                                 onChange={handleDripAccountIdChange}
                                 autoComplete='off'
                             />
-                            <Button primary submit>Submit</Button>
+                            <Button monochrome size="slim" submit>Update</Button>
                         </FormLayout>
                     </Form>
                     ))}
@@ -138,21 +130,24 @@ export function ClientDrip() {
                 </FormLayout.Group>                
             </FormLayout> 
                  
-        ):( null )
+        ):( <Text 
+            variant="heading2xl" as="h1">Drip</Text> )
     )
 
     return (
 
         <>
+        {clientDrip.data?.map((enabled, i) => (
             <CalloutCard
                 illustration={ dripLogo }
                 primaryAction={{
-                    content: 'Drip Integrations',
-                    onAction: () => enableDrip()
-                  }} 
+                    content: (showDrip ? (<Text color="critical" fontWeight="bold">Disable</Text>) : (<Text color="success" fontWeight="bold">Enable</Text>)),
+                    onAction: () => (enableDrip(), saveDripCheck(enabled.id, enabled.enabled))
+                }} 
             >
             {dripMarkup}  
-            </CalloutCard>  
+            </CalloutCard> 
+        ))} 
         </>
 
   )}

@@ -8,18 +8,18 @@ import { klaviyoLogo } from "../assets";
 import { 
     CalloutCard,
     Button,
-    Checkbox,
     Form,
     FormLayout,
-    TextField
+    TextField,
+    Text
   } from "@shopify/polaris";
 
 export function ClientKlaviyo() {
 
     const navigate = useNavigate();
     const [data, setData] = useState("");
-    const [showKlaviyo, setShowKlaviyo] = useState(false); 
-    const [checked, setChecked] = useState();
+    const [klaviyoChecked, setKlaviyoChecked] = useState();
+    const [showKlaviyo, setShowKlaviyo] = useState(); 
     const [listId, setListId] = useState('');
     const [apiKey, setApiKey] = useState('');
 
@@ -50,7 +50,7 @@ export function ClientKlaviyo() {
     const saveCheck = useCallback(
         async (id, enabled) => {
             const changed = !enabled
-            setChecked(changed);
+            setKlaviyoChecked(changed);
             const clientKlaviyo = 
                 {
                 enabled: changed
@@ -80,9 +80,10 @@ export function ClientKlaviyo() {
 
     useEffect(() => {
         klaviyoRecords.data?.map((startState, i) => (
-            setChecked(startState.enabled),
+            setKlaviyoChecked(startState.enabled),
             setListId(startState.listId),
-            setApiKey(startState.apiKey)
+            setApiKey(startState.apiKey),
+            setShowKlaviyo(startState.enabled)
           ));  
         const customHttpRouteRequest = async () => {
           const result = await api.connection.fetch("https://aerialforms--development.gadget.app/custom");
@@ -94,20 +95,12 @@ export function ClientKlaviyo() {
 
     const klaviyoMarkup = (
         showKlaviyo ? (
-            <FormLayout>           
+            <FormLayout> 
                 <FormLayout.Group>
-                        
-                        {klaviyoRecords.data?.map((enabled, i) => (
-                            <Checkbox
-                            id={enabled.id}
-                            key={enabled.id}
-                            position={i}
-                            label="Enabled"
-                            checked={checked}
-                            onChange={() => saveCheck(enabled.id, enabled.enabled)}
-                        />    
-                            ))}
-                                                                        
+                    <Text 
+                    color="success"
+                    variant="heading4xl" as="h1">Klaviyo Enabled</Text>
+                                                                                          
                     {klaviyoRecords.data?.map((info, i) => (
                     <Form 
                         id={info.id}
@@ -129,7 +122,7 @@ export function ClientKlaviyo() {
                                 onChange={handleListIdChange}
                                 autoComplete='off'
                             />
-                            <Button primary submit>Submit</Button>
+                            <Button monochrome size="slim" submit>Update</Button>
                         </FormLayout>
                     </Form>
                     ))}
@@ -137,21 +130,27 @@ export function ClientKlaviyo() {
                 </FormLayout.Group>                
             </FormLayout>
                                                 
-            ):( null )
+            ):( <Text 
+                variant="heading2xl" as="h1">Klaviyo</Text> )
     )
 
     return (
 
         <>
+        {klaviyoRecords.data?.map((enabled, i) => (
             <CalloutCard
+                    id={enabled.id}
+                    key={enabled.id}
+                    position={i}
                     illustration={ klaviyoLogo }
                     primaryAction={{
-                        content: 'Klaviyo Integrations',
-                        onAction: () => enableKlaviyo()
+                        content: (showKlaviyo ? (<Text color="critical" fontWeight="bold">Disable</Text>) : (<Text color="success" fontWeight="bold">Enable</Text>)),
+                        onAction: () => (enableKlaviyo(), saveCheck(enabled.id, enabled.enabled))
                     }} 
                 >
                 {klaviyoMarkup}  
             </CalloutCard>
+        ))}
         </>
 
   )}
