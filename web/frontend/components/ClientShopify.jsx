@@ -1,82 +1,89 @@
-import {useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { api } from "../api";
 import { useMaybeFindFirst } from "@gadgetinc/react";
 import { useAction } from "@gadgetinc/react";
 import { shopifyLogo } from "../assets";
 
 import { 
-    FormLayout,
-    Checkbox,
     LegacyCard,
     Button,
     LegacyStack,
     ButtonGroup,
-    Text
+    Text,
+    Spinner
   } from "@shopify/polaris";
 
-export function ClientShopify() {
+export function ClientShopify() {    
+
+    // get the current store data
+    const [storeData, setStoreData] = useState('')
 
     useEffect(() => {
         const customHttpRouteRequest = async () => {
             const result = await api.connection.fetch("https://aerialforms--development.gadget.app/custom")
             const json = await result.json()
-            setData(json.toString())
+            setStoreData(json)
         }
 
         customHttpRouteRequest().catch(console.error);
     }, [])
 
-
-    // get the current store data
-    const [data, setData] = useState("")
-
     // get the model data using the current store data
-    const [clientShopify] = useMaybeFindFirst(api.clientShopify, {    
-        filter: {
-            currentStoreId: {
-                equals: data.currentShopId,
-            }
+    const [{ data, fetching }] = useMaybeFindFirst(api.clientShopify, {    
+        where: {
+            currentStoreId: toString(storeData?.currentShopId)
         }
     })
 
-    const [shopifyUpdated, updateShopify] = useAction(api.clientShopify.update);
-
+    
+    const [updateStatusResponse, updateStatus] = useAction(api.clientShopify.update)
 
     const enableShopifyIntegration = async () => {
 
-        console.log(clientShopify.data.id)
-
-        const id = 1
-        
         const status = {
-            enabled: "true"
+            "id": data.id,
+            "clientShopify": {
+                "enabled": true
+            }
         }
 
-        await updateShopify({ id, status })
+        await updateStatus(status)
     }
 
-    const disbleShopifyIntegration = () => {
-        console.log('disable shopify')
-    }
-    
-    const buttons = (
-        clientShopify?.data?.enabled ? (
-            <Button destructive onClick={disbleShopifyIntegration}>Disable</Button>
-        ) : (
-            <Button primary onClick={enableShopifyIntegration}>Enable</Button>
-        )
-    )
-    
+    const disbleShopifyIntegration = async () => {
+        
+        const status = {
+            "id": data.id,
+            "clientShopify": {
+                "enabled": false
+            }
+        }
 
-    const shopifyDataInputs = (
-        clientShopify?.data?.enabled ? (
+        await updateStatus(status)
+
+    }
+
+    const Buttons = () => {
+
+        if (fetching) {
+            return <Spinner accessibilityLabel="Small spinner example" size="small" />
+        }
+
+        if (data?.enabled) {
+            return <Button destructive onClick={disbleShopifyIntegration}>Disable</Button>
+        } else {
+            return <Button primary onClick={enableShopifyIntegration}>Enable</Button>
+        }
+
+    }
+
+    const dataInputs = (
+        data?.enabled ? (
             <LegacyCard.Section>
-                enabled
+                add the inputs here
             </LegacyCard.Section>
         ) : (
-            <LegacyCard.Section>
-                disabled
-            </LegacyCard.Section>
+            <></>
         )
     )
     
@@ -95,12 +102,12 @@ export function ClientShopify() {
                     </p>
                     <LegacyStack>
                         <ButtonGroup>
-                            {buttons}
+                            <Buttons></Buttons>
                         </ButtonGroup>
                     </LegacyStack>
                 </LegacyStack>
             </LegacyCard.Section>
-            {shopifyDataInputs}
+            {dataInputs}
         </LegacyCard>
         
 
