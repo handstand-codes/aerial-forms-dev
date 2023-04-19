@@ -5,14 +5,19 @@ import { useFindMany } from "@gadgetinc/react";
 import { 
   Page,
   Layout,
-  Stack,
+  LegacyStack,
   Spinner,
-  Card,
   IndexTable,
-  TextContainer,
+  LegacyCard,
   EmptySearchResult,
   Pagination,
+  Icon,
 } from "@shopify/polaris";
+
+import {
+  TickMinor,
+  CancelMinor
+} from '@shopify/polaris-icons';
 
 
 export default function HomePage() {
@@ -34,6 +39,10 @@ export default function HomePage() {
       currentStoreId: true,
       submitEmail: true,
       createdAt: true,
+      sentToDrip: true,
+      sentToHubspot: true,
+      sentToShopify: true,
+      sentToMailchimp: true
     },
   });
   
@@ -74,23 +83,37 @@ export default function HomePage() {
 // ROW MARKUP //
 
   const rowMarkup = emailRecords.data?.map((email, i) => (
+
+    
     
       <IndexTable.Row
         id={email.id}
         key={email.id}
         position={i}
-      >    
-      
+      >
         <IndexTable.Cell>
-          <TextContainer>
-            {email.submitEmail}
-          </TextContainer>
+          {email.submitEmail}
         </IndexTable.Cell>
-
         <IndexTable.Cell>
-          <TextContainer>
-            {email.createdAt.toLocaleDateString()}
-          </TextContainer>
+          {email.createdAt.toLocaleString()}
+        </IndexTable.Cell>
+        <IndexTable.Cell>
+          {email.sentToShopify ? <Icon source={TickMinor} color="base" /> :  <Icon source={CancelMinor} color="base" /> }
+        </IndexTable.Cell>
+        <IndexTable.Cell>
+          {email.sentToKlaviyo ? <Icon source={TickMinor} color="base" /> :  <Icon source={CancelMinor} color="base" /> }
+        </IndexTable.Cell>
+        <IndexTable.Cell>
+          {email.sentToMailchimp ? <Icon source={TickMinor} color="base" /> :  <Icon source={CancelMinor} color="base" /> }
+        </IndexTable.Cell>
+        <IndexTable.Cell>
+          {email.sentToHubspot ? <Icon source={TickMinor} color="base" /> :  <Icon source={CancelMinor} color="base" /> }
+        </IndexTable.Cell>
+        <IndexTable.Cell>
+          {email.sentToDrip ? <Icon source={TickMinor} color="base" /> :  <Icon source={CancelMinor} color="base" /> }
+        </IndexTable.Cell>
+        <IndexTable.Cell>
+          {email.sentToZoho ? <Icon source={TickMinor} color="base" /> :  <Icon source={CancelMinor} color="base" /> }
         </IndexTable.Cell>
 
       </IndexTable.Row> 
@@ -103,9 +126,9 @@ export default function HomePage() {
   if (emailRecords.fetching) {
     return (
       <Page>
-        <Stack sectioned alignment="center">
+        <LegacyStack sectioned alignment="center">
           <Spinner /> <span>Loading...</span>
-        </Stack>
+        </LegacyStack>
       </Page>
     );
   }
@@ -115,13 +138,19 @@ export default function HomePage() {
     <Page title="Submissions">
         <Layout>
             <Layout.Section>
-                <Card>
+                <LegacyCard>
                     <IndexTable
                       itemCount={emailRecords.data?.length}
                       emptyState={emptyStateMarkup}
                       headings={[
-                        {title: 'Customer Emails:'},
-                        {title: 'Created At:'},
+                        {title: 'Customer Email'},
+                        {title: 'Created At'},
+                        {title: 'Sent to Shopify'},
+                        {title: 'Sent to Klaviyo'},
+                        {title: 'Sent to Mailchimp'},
+                        {title: 'Sent to Hubspot'},
+                        {title: 'Sent to Drip'},
+                        {title: 'Sent to Zoho'},
                       ]}
                       selectable={false}
                       >
@@ -129,8 +158,8 @@ export default function HomePage() {
                       
                     </IndexTable> 
                           <br/>
-                          <Stack> 
-                              <Stack.Item>
+                          <LegacyStack> 
+                              <LegacyStack.Item>
                                   <Pagination
                                     hasPrevious={emailRecords.data.hasPreviousPage}
                                     onPrevious={() => {
@@ -141,10 +170,10 @@ export default function HomePage() {
                                       getNextPage()
                                       }}
                                   />   
-                              </Stack.Item>               
-                          </Stack> 
+                              </LegacyStack.Item>               
+                          </LegacyStack> 
                           <br/>
-                  </Card>         
+                  </LegacyCard>         
             </Layout.Section>        
         </Layout>
     </Page> 

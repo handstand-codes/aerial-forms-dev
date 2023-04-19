@@ -1,104 +1,114 @@
-import {useState, useCallback, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { api } from "../api";
-import { useFindMany } from "@gadgetinc/react";
+import { useMaybeFindFirst } from "@gadgetinc/react";
 import { useAction } from "@gadgetinc/react";
-import { useNavigate } from "@shopify/app-bridge-react";
 import { shopifyLogo } from "../assets";
 
 import { 
-    CalloutCard,
-    FormLayout,
-    Checkbox,
-    
+    LegacyCard,
+    Button,
+    LegacyStack,
+    ButtonGroup,
+    Text,
+    Spinner
   } from "@shopify/polaris";
 
-export function ClientShopify() {
+export function ClientShopify() {    
 
-    const navigate = useNavigate();
-    const [data, setData] = useState("");
-    const [showShopify, setShowShopify] = useState(false);
-    const [shopifyChecked, setShopifyChecked] = useState();
-
-    const [shopifyEnabledResponse, updateShopifyEnabled] = useAction(api.clientShopify.update);
-
-    const [shopifyEnabled] = useFindMany(api.clientShopify, {    
-        filter: {
-            currentStoreId: {
-              equals: data.currentShopId,
-            },
-          }
-      });
-
-    const enableShopify = useCallback(
-        () => setShowShopify((showShopify) => !showShopify),       
-        []);
-
-    const saveShopifyCheck = useCallback(
-        async (id, enabled) => {
-            const changed = !enabled
-            setShopifyChecked(changed)
-            const clientShopify = 
-                {
-                enabled: changed
-                } 
-                             
-    await updateShopifyEnabled({ id, clientShopify });            
-        }
-    );  
-
-    if (shopifyEnabledResponse.fetching || shopifyEnabledResponse.data) {
-        if (shopifyEnabledResponse.data) {
-        navigate("/integrations");
-        }
-    };
+    // get the current store data
+    const [storeData, setStoreData] = useState('')
 
     useEffect(() => {
-        shopifyEnabled.data?.map((startState, i) => (
-            console.log(startState.enabled),
-            setShopifyChecked(startState.enabled)
-        ));
         const customHttpRouteRequest = async () => {
-        const result = await api.connection.fetch("https://aerialforms--development.gadget.app/custom");
-        const json = await result.json();
-        setData(json.toString());   
-        };   
+            const result = await api.connection.fetch("https://aerialforms--development.gadget.app/custom")
+            const json = await result.json()
+            setStoreData(json)
+        }
+
         customHttpRouteRequest().catch(console.error);
-    }, []);
+    }, [])
 
-    const shopifyMarkup = (
-        showShopify ? (
-            <FormLayout>           
-                <FormLayout.Group>
-                    
-                        {shopifyEnabled.data?.map((enabled, i) => (
-                            <Checkbox
-                                id={enabled.id}
-                                key={enabled.id}
-                                position={i}
-                                label="Enabled"
-                                checked={shopifyChecked}
-                                onChange={() => saveShopifyCheck(enabled.id, enabled.enabled)}
-                            />                                
-                        ))}
-                    
-                </FormLayout.Group>                
-            </FormLayout>
-            
-        ):( null )
+    // get the model data using the current store data
+    const [{ data, fetching }] = useMaybeFindFirst(api.clientShopify, {    
+        where: {
+            currentStoreId: toString(storeData?.currentShopId)
+        }
+    })
+
+    
+    const [updateStatusResponse, updateStatus] = useAction(api.clientShopify.update)
+
+    const enableShopifyIntegration = async () => {
+
+        const status = {
+            "id": data.id,
+            "clientShopify": {
+                "enabled": true
+            }
+        }
+
+        await updateStatus(status)
+    }
+
+    const disbleShopifyIntegration = async () => {
+        
+        const status = {
+            "id": data.id,
+            "clientShopify": {
+                "enabled": false
+            }
+        }
+
+        await updateStatus(status)
+
+    }
+
+    const Buttons = () => {
+
+        if (fetching) {
+            return <Spinner accessibilityLabel="Small spinner example" size="small" />
+        }
+
+        if (data?.enabled) {
+            return <Button destructive onClick={disbleShopifyIntegration}>Disable</Button>
+        } else {
+            return <Button primary onClick={enableShopifyIntegration}>Enable</Button>
+        }
+
+    }
+
+    const dataInputs = (
+        data?.enabled ? (
+            <LegacyCard.Section>
+                add the inputs here
+            </LegacyCard.Section>
+        ) : (
+            <></>
+        )
     )
-
+    
     return (
-
-        <>
-            <CalloutCard
-                illustration={ shopifyLogo }
-                primaryAction={{
-                    content: 'Shopify Integrations',
-                    onAction: () => enableShopify()
-                  }} 
-            >
-            {shopifyMarkup}    
-            </CalloutCard>
-        </>
+        <LegacyCard>
+            <LegacyCard.Section>
+                <LegacyStack alignment="center">
+                    <img src={shopifyLogo} alt='Shopify logo' style={{ width: '25px' }} />
+                    <Text variant='headingMd' as='h2'>Shopify</Text>
+                </LegacyStack>
+            </LegacyCard.Section>
+            <LegacyCard.Section>
+                <LegacyStack spacing="loose" vertical>
+                    <p>
+                        New email submissions create new customers in Shopify.
+                    </p>
+                    <LegacyStack>
+                        <ButtonGroup>
+                            <Buttons></Buttons>
+                        </ButtonGroup>
+                    </LegacyStack>
+                </LegacyStack>
+            </LegacyCard.Section>
+            {dataInputs}
+        </LegacyCard>
+        
 
   )}
