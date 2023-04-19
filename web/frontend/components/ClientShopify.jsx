@@ -50,7 +50,7 @@ export function ClientShopify() {
         await updateStatus(status)
     }
 
-    const disbleShopifyIntegration = async () => {
+    const disableShopifyIntegration = async () => {
         
         const status = {
             "id": data.id,
@@ -70,7 +70,7 @@ export function ClientShopify() {
         }
 
         if (data?.enabled) {
-            return <Button destructive onClick={disbleShopifyIntegration}>Disable</Button>
+            return <Button destructive onClick={disableShopifyIntegration}>Disable</Button>
         } else {
             return <Button primary onClick={enableShopifyIntegration}>Enable</Button>
         }

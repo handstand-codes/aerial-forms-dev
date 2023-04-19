@@ -17,10 +17,11 @@ export default function IntegrationsPage() {
 
             <ClientShopify />
             <ClientKlaviyo />
+            <ClientZoho />
             <ClientMailchimp />
             <ClientHubspot />
             <ClientDrip />
-            <ClientZoho />
+            
                      
         </Page>
   )}
