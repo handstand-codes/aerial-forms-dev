@@ -64,9 +64,7 @@ export function ClientDrip() {
     // Update API Key / Server # //
 
     const saveDripInfo = useCallback(
-        async (id) => {
-            console.log(id)
-
+        async (id) => {            
             const clientDrip = 
             {
                 apiKey: dripToken,

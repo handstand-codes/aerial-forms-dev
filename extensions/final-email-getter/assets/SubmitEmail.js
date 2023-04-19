@@ -12,9 +12,7 @@ class Submit extends HTMLElement {
             e.preventDefault()
             const formData = new FormData(form)
             const email = formData.get("email")
-            const currentStoreId = formData.get("storeId")
-            
-        console.log(formData)
+            const currentStoreId = formData.get("storeId")        
 
         if(email) {
             success.classList.remove('hidden');

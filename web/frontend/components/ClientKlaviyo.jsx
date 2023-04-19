@@ -68,7 +68,6 @@ export function ClientKlaviyo() {
             listId: listId,
             apiKey: apiKey
         }          
-        console.log(clientKlaviyo)
         await updateKlaviyo({ id, clientKlaviyo });         
         }
     );  
