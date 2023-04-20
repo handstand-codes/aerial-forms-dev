@@ -27,7 +27,7 @@ export function ClientHubspot() {
         const customHttpRouteRequest = async () => {
             const result = await api.connection.fetch("https://aerialforms--development.gadget.app/custom")
             const json = await result.json()
-            setStoreData(json)
+            setStoreData(json.currentShopId.toString())
         }
 
         customHttpRouteRequest().catch(console.error);
@@ -35,10 +35,8 @@ export function ClientHubspot() {
 
     // get the model data using the current store data
     const [{ data, fetching }] = useMaybeFindFirst(api.clientHubspot, {    
-        where: {
-            currentStoreId: toString(storeData?.currentShopId)
-        }
-    })
+        filter: { currentStoreId: { equals: storeData } },  
+    });
 
     
     const [updateStatusResponse, updateStatus] = useAction(api.clientHubspot.update)
@@ -46,7 +44,9 @@ export function ClientHubspot() {
     const enableHubspotIntegration = async () => {
 
         const status = {
-            "id": data.id,
+            filter: { currentStoreId: { equals: storeData } 
+            },
+            "id": data?.id,
             "clientHubspot": {
                 "enabled": true
             }
@@ -58,7 +58,9 @@ export function ClientHubspot() {
     const disableHubspotIntegration = async () => {
         
         const status = {
-            "id": data.id,
+            filter: { currentStoreId: { equals: storeData } 
+            },
+            "id": data?.id,
             "clientHubspot": {
                 "enabled": false
             }
@@ -77,7 +79,9 @@ export function ClientHubspot() {
     const saveHubspotInfo = async () => {
         
         const status = {
-            "id": data.id,
+            filter: { currentStoreId: { equals: storeData } 
+            },
+            "id": data?.id,
             "clientHubspot": {
                 "accessToken": hubspotAccessToken
             }

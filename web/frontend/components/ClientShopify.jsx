@@ -22,7 +22,7 @@ export function ClientShopify() {
         const customHttpRouteRequest = async () => {
             const result = await api.connection.fetch("https://aerialforms--development.gadget.app/custom")
             const json = await result.json()
-            setStoreData(json)
+            setStoreData(json.currentShopId.toString())
         }
 
         customHttpRouteRequest().catch(console.error);
@@ -30,10 +30,8 @@ export function ClientShopify() {
 
     // get the model data using the current store data
     const [{ data, fetching }] = useMaybeFindFirst(api.clientShopify, {    
-        where: {
-            currentStoreId: toString(storeData?.currentShopId)
-        }
-    })
+        filter: { currentStoreId: { equals: storeData } },  
+    });
 
     
     const [updateStatusResponse, updateStatus] = useAction(api.clientShopify.update)
@@ -41,7 +39,9 @@ export function ClientShopify() {
     const enableShopifyIntegration = async () => {
 
         const status = {
-            "id": data.id,
+            filter: { currentStoreId: { equals: storeData } 
+            },
+            "id": data?.id,
             "clientShopify": {
                 "enabled": true
             }
@@ -53,7 +53,9 @@ export function ClientShopify() {
     const disableShopifyIntegration = async () => {
         
         const status = {
-            "id": data.id,
+            filter: { currentStoreId: { equals: storeData } 
+            },
+            "id": data?.id,
             "clientShopify": {
                 "enabled": false
             }
