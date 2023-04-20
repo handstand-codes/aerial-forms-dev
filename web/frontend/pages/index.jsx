@@ -23,16 +23,16 @@ import {
 export default function HomePage() {
 
 // API call & confirm Shop ID //
-  const [data, setData] = useState("")
+  const [storeData, setStoreData] = useState("");
   const [cursor, setCursor] = useState({ first: 25 });
 
+ 
+  
+  
   const [emailRecords] = useFindMany(api.email, {    
     ...cursor,
-    filter: {
-      currentStoreId: {
-        equals: data.currentShopId,
-      },
-    },
+    filter: { currentStoreId: { equals: storeData } 
+  },
     select: {
       __typename: true,
       id: true,
@@ -46,18 +46,18 @@ export default function HomePage() {
     },
   });
   
+
+  
   useEffect(() => {
-    // define an async function to make the request
+    
     const customHttpRouteRequest = async () => {
-      // make sure to use your Gadget app domain and route!
-      const result = await api.connection.fetch("https://aerialforms--development.gadget.app/custom");
-      const json = await result.json();
-      // use state hooks to handle response data in your component
-      setData(json.toString());   
-    };
-    // call async function and handle errors
-    customHttpRouteRequest().catch(console.error);
-  }, []);
+      const result = await api.connection.fetch("https://aerialforms--development.gadget.app/custom")
+      const json = await result.json()
+      setStoreData(json.currentShopId.toString())
+  }
+
+  customHttpRouteRequest().catch(console.error);
+}, [])
     
 // EMPTY STATE //
 
@@ -72,12 +72,12 @@ export default function HomePage() {
 
   const getNextPage = useCallback(() => {
     // use first + after to page forwards
-    setCursor({ first: 25, after: emailRecords.data.endCursor });
+    setCursor({ first: 25, after: emailRecords.data?.endCursor });
   }, [emailRecords.data]);
 
   const getPreviousPage = useCallback(() => {
     // use last + before to page backwards
-    setCursor({ last: 25, before: emailRecords.data.startCursor });
+    setCursor({ last: 25, before: emailRecords.data?.startCursor });
   }, [emailRecords.data]);
 
 // ROW MARKUP //
@@ -92,7 +92,7 @@ export default function HomePage() {
         position={i}
       >
         <IndexTable.Cell>
-          {email.submitEmail}
+        {email.submitEmail}
         </IndexTable.Cell>
         <IndexTable.Cell>
           {email.createdAt.toLocaleString()}
@@ -161,11 +161,11 @@ export default function HomePage() {
                           <LegacyStack> 
                               <LegacyStack.Item>
                                   <Pagination
-                                    hasPrevious={emailRecords.data.hasPreviousPage}
+                                    hasPrevious={emailRecords.data?.hasPreviousPage}
                                     onPrevious={() => {
                                       getPreviousPage()
                                     }}
-                                    hasNext={emailRecords.data.hasNextPage}
+                                    hasNext={emailRecords.data?.hasNextPage}
                                     onNext={() => {
                                       getNextPage()
                                       }}

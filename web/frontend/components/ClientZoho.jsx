@@ -27,24 +27,24 @@ export function ClientZoho() {
         const customHttpRouteRequest = async () => {
             const result = await api.connection.fetch("https://aerialforms--development.gadget.app/custom")
             const json = await result.json()
-            setStoreData(json)
+            setStoreData(json.currentShopId.toString())
         }
         customHttpRouteRequest().catch(console.error);
     }, [])
 
     // get the model data using the current store data
     const [{ data, fetching }] = useMaybeFindFirst(api.clientZoho, {    
-        where: {
-            currentStoreId: toString(storeData?.currentShopId)
-        }
-    })
+        filter: { currentStoreId: { equals: storeData } },  
+    });
 
     const [updateStatusResponse, updateStatus] = useAction(api.clientZoho.update)
 
     const enableZohoIntegration = async () => {
 
         const status = {
-            "id": data.id,
+            filter: { currentStoreId: { equals: storeData } 
+            },
+            "id": data?.id,
             "clientZoho": {
                 "enabled": true
             }
@@ -56,7 +56,9 @@ export function ClientZoho() {
     const disableZohoIntegration = async () => {
         
         const status = {
-            "id": data.id,
+            filter: { currentStoreId: { equals: storeData } 
+            },
+            "id": data?.id,
             "clientZoho": {
                 "enabled": false
             }
@@ -75,7 +77,9 @@ export function ClientZoho() {
     const saveZohoInfo = async () => {
         
         const status = {
-            "id": data.id,
+            filter: { currentStoreId: { equals: storeData } 
+            },
+            "id": data?.id,
             "clientZoho": {
                 "listKey": zohoListKey
             }
