@@ -80,7 +80,7 @@ export function ClientShopify() {
     const dataInputs = (
         data?.enabled ? (
             <LegacyCard.Section>
-                add the inputs here
+                <Text color="success" variant="heading2xl" as="h1">Shopify Enabled</Text>
             </LegacyCard.Section>
         ) : (
             <></>
