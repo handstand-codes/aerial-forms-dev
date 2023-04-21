@@ -20,6 +20,7 @@ import {
   
 import Clipboard from 'react-clipboard.js';
 
+
   
 export default function SettingsPage() {
 
@@ -76,7 +77,8 @@ export default function SettingsPage() {
                         />
                     </FormLayout>
                         {bannerMarkup}   
-                </LegacyCard.Section>              
+                </LegacyCard.Section>  
+                            
         </LegacyCard>   
 
     )
