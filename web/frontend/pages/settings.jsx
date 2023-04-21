@@ -3,15 +3,19 @@ import { useState, useCallback } from "react";
 import { 
     Page,
     Layout,
-    Card,
+    LegacyCard,
+    Button,
+    LegacyStack,
     TextField,
     Icon,
     FormLayout,
     Banner,
+    Inline
   } from "@shopify/polaris";
   
 import {
     ClipboardMinor,
+    CircleInformationMajor
   } from '@shopify/polaris-icons';
   
 import Clipboard from 'react-clipboard.js';
@@ -35,40 +39,45 @@ export default function SettingsPage() {
     
     return (
 
-        <Page title="Settings">
-            <Layout>
-                <Layout.Section>
-                    <Card title="Display the bundle on a page" sectioned>
-                        <p>Copy this code and paste it on the pages where you want to show this bundle.</p>
-                        <br/>
-                        <div>
-                            <FormLayout>
+        <LegacyCard title="Settings">
+                <LegacyCard.Section>
+                    <Inline align="space-between" blockAlign="center" gap="4">
+                        
+                        <LegacyStack title="Display the bundle on a page" sectioned>
+                            <p>Copy this code and paste it on the pages where you want to show this bundle.</p>
+                        </LegacyStack>
+                        <Button
+                            alignment="right"
+                            plain
+                            icon={CircleInformationMajor}
+                            accessibilityLabel="Learn more"
+                            url="https://handstand.helpscoutdocs.com/article/9-how-to-embed-aerial-forms-using-code-snippet"
+                            target="_blank" 
+                        />
+                        
+                    </Inline>
+                </LegacyCard.Section>
+                <LegacyCard.Section>
+                    <FormLayout>
                         <TextField
                         readOnly
                         value="<div class='aerialForms'></div>"
                         connectedRight=
                             {
-                                <Clipboard 
-                                    data-clipboard-text="<div class='aerialForms'></div>"
-                                    button-title="I'm a tooltip"
-                                    className="Polaris-Button"
-                                    onClick={() => setShowBanner(true)}
-                                >                                        
-                                    <Icon source={ClipboardMinor}/>  
-                                      
-                                </Clipboard>
+                            <Clipboard 
+                                data-clipboard-text="<div class='aerialForms'></div>"
+                                button-title="I'm a tooltip"
+                                className="Polaris-Button"
+                                onClick={() => setShowBanner(true)}
+                            >                                        
+                                <Icon source={ClipboardMinor}/>     
+                            </Clipboard>
                             }
                         />
-                        </FormLayout>
-                        </div>
-                        <br/>
-                       
-                        {bannerMarkup} 
-                      
-                    </Card>         
-                </Layout.Section>        
-            </Layout>
-        </Page>
+                    </FormLayout>
+                        {bannerMarkup}   
+                </LegacyCard.Section>              
+        </LegacyCard>   
 
     )
 }
