@@ -158,7 +158,7 @@ export default function HomePage() {
                       
                     </IndexTable> 
                           <br/>
-                          <LegacyStack> 
+                          <LegacyStack alignment="center" distribution="center"> 
                               <LegacyStack.Item>
                                   <Pagination
                                     hasPrevious={emailRecords.data?.hasPreviousPage}
