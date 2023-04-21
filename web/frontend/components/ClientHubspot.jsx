@@ -16,6 +16,10 @@ import {
     Form
   } from "@shopify/polaris";
 
+import {
+    CircleInformationMajor
+} from '@shopify/polaris-icons';
+
 export function ClientHubspot() {    
 
     // get the current store data
@@ -139,12 +143,20 @@ export function ClientHubspot() {
                 <LegacyStack alignment="center">
                     <img src={hubspotLogo} alt='Shopify logo' style={{ width: '25px' }} />
                     <Text variant='headingMd' as='h2'>Hubspot</Text>
+                    
                 </LegacyStack>
             </LegacyCard.Section>
             <LegacyCard.Section>
                 <LegacyStack spacing="loose" vertical>
                     <p>
                         New email submissions create new customers in Hubspot.
+                        <Button
+                        alignment="right"
+                        plain
+                        icon={CircleInformationMajor}
+                        accessibilityLabel="Learn more"
+                        url="https://handstand.helpscoutdocs.com/article/5-how-to-find-api-keys-for-hubspot-integrations"
+                        />
                     </p>
                     <LegacyStack>
                         <ButtonGroup>

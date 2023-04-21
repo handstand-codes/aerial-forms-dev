@@ -16,6 +16,10 @@ import {
     Form
   } from "@shopify/polaris";
 
+import {
+    CircleInformationMajor
+} from '@shopify/polaris-icons';
+
 export function ClientDrip() {    
 
     // get the current store data
@@ -153,12 +157,20 @@ export function ClientDrip() {
                 <LegacyStack alignment="center">
                     <img src={dripLogo} alt='Shopify logo' style={{ width: '25px' }} />
                     <Text variant='headingMd' as='h2'>Drip</Text>
+                    
                 </LegacyStack>
             </LegacyCard.Section>
             <LegacyCard.Section>
                 <LegacyStack spacing="loose" vertical>
                     <p>
                         New email submissions create new customers in Drip.
+                        <Button
+                            alignment="right"
+                            plain
+                            icon={CircleInformationMajor}
+                            accessibilityLabel="Learn more"
+                            url="https://handstand.helpscoutdocs.com/article/8-how-to-find-api-keys-for-drip-integrations"
+                        />
                     </p>
                     <LegacyStack>
                         <ButtonGroup>

@@ -16,6 +16,10 @@ import {
     Form
   } from "@shopify/polaris";
 
+import {
+    CircleInformationMajor
+} from '@shopify/polaris-icons';
+
 export function ClientZoho() {    
 
     // get the current store data
@@ -109,7 +113,7 @@ export function ClientZoho() {
                 <FormLayout>           
                     <FormLayout.Group>
                         <Text color="success" variant="heading2xl" as="h1">Zoho Enabled</Text>
-                              
+                           
                         <Form 
                             onSubmit={() => saveZohoInfo()}>
                             <FormLayout>
@@ -138,12 +142,20 @@ export function ClientZoho() {
                 <LegacyStack alignment="center">
                     <img src={zohoLogo} alt='Shopify logo' style={{ width: '25px' }} />
                     <Text variant='headingMd' as='h2'>Zoho</Text>
+                    
                 </LegacyStack>
             </LegacyCard.Section>
             <LegacyCard.Section>
                 <LegacyStack spacing="loose" vertical>
                     <p>
                         New email submissions create new customers in Zoho.
+                        <Button
+                            alignment="right"
+                            plain
+                            icon={CircleInformationMajor}
+                            accessibilityLabel="Learn more"
+                            url="https://handstand.helpscoutdocs.com/article/7-how-to-find-api-keys-for-zoho-integrations"
+                        />
                     </p>
                     <LegacyStack>
                         <ButtonGroup>
