@@ -13,7 +13,8 @@ import {
     TextField,
     Spinner,
     FormLayout,
-    Form
+    Form,
+    Inline
   } from "@shopify/polaris";
 
 import {
@@ -139,23 +140,25 @@ export function ClientZoho() {
     return (
         <LegacyCard>
             <LegacyCard.Section>
-                <LegacyStack alignment="center">
-                    <img src={zohoLogo} alt='Shopify logo' style={{ width: '25px' }} />
-                    <Text variant='headingMd' as='h2'>Zoho</Text>
-                    
-                </LegacyStack>
+                <Inline align="space-between" blockAlign="center" gap="4">
+                    <LegacyStack alignment="center">
+                        <img src={zohoLogo} alt='Shopify logo' style={{ width: '25px' }} />
+                        <Text variant='headingMd' as='h2'>Zoho</Text>
+                    </LegacyStack>
+                    <Button
+                        alignment="right"
+                        plain
+                        icon={CircleInformationMajor}
+                        accessibilityLabel="Learn more"
+                        url="https://handstand.helpscoutdocs.com/article/7-how-to-find-api-keys-for-zoho-integrations"
+                        target="_blank" 
+                    />
+                </Inline>
             </LegacyCard.Section>
             <LegacyCard.Section>
                 <LegacyStack spacing="loose" vertical>
                     <p>
                         New email submissions create new customers in Zoho.
-                        <Button
-                            alignment="right"
-                            plain
-                            icon={CircleInformationMajor}
-                            accessibilityLabel="Learn more"
-                            url="https://handstand.helpscoutdocs.com/article/7-how-to-find-api-keys-for-zoho-integrations"
-                        />
                     </p>
                     <LegacyStack>
                         <ButtonGroup>
