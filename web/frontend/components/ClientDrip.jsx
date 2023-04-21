@@ -13,7 +13,8 @@ import {
     TextField,
     Spinner,
     FormLayout,
-    Form
+    Form,
+    Inline
   } from "@shopify/polaris";
 
 import {
@@ -154,23 +155,26 @@ export function ClientDrip() {
     return (
         <LegacyCard>
             <LegacyCard.Section>
-                <LegacyStack alignment="center">
-                    <img src={dripLogo} alt='Shopify logo' style={{ width: '25px' }} />
-                    <Text variant='headingMd' as='h2'>Drip</Text>
-                    
-                </LegacyStack>
-            </LegacyCard.Section>
-            <LegacyCard.Section>
-                <LegacyStack spacing="loose" vertical>
-                    <p>
-                        New email submissions create new customers in Drip.
-                        <Button
+                <Inline align="space-between" blockAlign="center" gap="4">
+                    <LegacyStack alignment="center">
+                        <img src={dripLogo} alt='Shopify logo' style={{ width: '25px' }} />
+                        <Text variant='headingMd' as='h2'>Drip</Text>
+                        
+                    </LegacyStack>
+                    <Button
                             alignment="right"
                             plain
                             icon={CircleInformationMajor}
                             accessibilityLabel="Learn more"
                             url="https://handstand.helpscoutdocs.com/article/8-how-to-find-api-keys-for-drip-integrations"
+                            target="_blank" 
                         />
+                </Inline>
+            </LegacyCard.Section>
+            <LegacyCard.Section>
+                <LegacyStack spacing="loose" vertical>
+                    <p>
+                        New email submissions create new customers in Drip. 
                     </p>
                     <LegacyStack>
                         <ButtonGroup>

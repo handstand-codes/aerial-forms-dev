@@ -13,7 +13,8 @@ import {
     TextField,
     Spinner,
     FormLayout,
-    Form
+    Form,
+    Inline
   } from "@shopify/polaris";
 
 import {
@@ -154,23 +155,25 @@ export function ClientKlaviyo() {
     return (
         <LegacyCard>
             <LegacyCard.Section>
-                <LegacyStack alignment="center">
-                    <img src={klaviyoLogo} alt='Shopify logo' style={{ width: '25px' }} />
-                    <Text variant='headingMd' as='h2'>Klaviyo</Text>
-                    
-                </LegacyStack>
+                <Inline align="space-between" blockAlign="center" gap="4">
+                    <LegacyStack>
+                        <img src={klaviyoLogo} alt='Shopify logo' style={{ width: '25px' }} />
+                        <Text variant='headingMd' as='h2'>Klaviyo</Text>  
+                    </LegacyStack>
+                    <Button
+                        alignment="right"
+                        plain
+                        icon={CircleInformationMajor}
+                        accessibilityLabel="Learn more"
+                        url="https://handstand.helpscoutdocs.com/article/4-how-to-find-api-keys-for-email-integrations" 
+                        target="_blank"   
+                    />
+                </Inline>
             </LegacyCard.Section>
             <LegacyCard.Section>
                 <LegacyStack spacing="loose" vertical>
                     <p>
-                        New email submissions create new customers in Klaviyo.
-                        <Button
-                            alignment="right"
-                            plain
-                            icon={CircleInformationMajor}
-                            accessibilityLabel="Learn more"
-                            url="https://handstand.helpscoutdocs.com/article/4-how-to-find-api-keys-for-email-integrations"
-                        />
+                        New email submissions create new customers in Klaviyo.     
                     </p>
                     <LegacyStack>
                         <ButtonGroup>

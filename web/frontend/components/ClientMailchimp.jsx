@@ -13,7 +13,8 @@ import {
     TextField,
     Spinner,
     FormLayout,
-    Form
+    Form,
+    Inline
   } from "@shopify/polaris";
 
 import {
@@ -171,23 +172,25 @@ export function ClientMailchimp() {
     return (
         <LegacyCard>
             <LegacyCard.Section>
-                <LegacyStack alignment="center">
-                    <img src={mailchimpLogo} alt='Shopify logo' style={{ width: '25px' }} />
-                    <Text variant='headingMd' as='h2'>Mailchimp</Text>
-                    
-                </LegacyStack>
+                <Inline align="space-between" blockAlign="center" gap="4">
+                    <LegacyStack alignment="center">
+                        <img src={mailchimpLogo} alt='Shopify logo' style={{ width: '25px' }} />
+                        <Text variant='headingMd' as='h2'>Mailchimp</Text>
+                    </LegacyStack>
+                    <Button
+                        alignment="right"
+                        plain
+                        icon={CircleInformationMajor}
+                        accessibilityLabel="Learn more"
+                        url="https://handstand.helpscoutdocs.com/article/6-how-to-find-api-keys-for-mailchimp-integrations"
+                        target="_blank" 
+                    />
+                </Inline>
             </LegacyCard.Section>
             <LegacyCard.Section>
                 <LegacyStack spacing="loose" vertical>
                     <p>
                         New email submissions create new customers in Mailchimp.
-                        <Button
-                            alignment="right"
-                            plain
-                            icon={CircleInformationMajor}
-                            accessibilityLabel="Learn more"
-                            url="https://handstand.helpscoutdocs.com/article/6-how-to-find-api-keys-for-mailchimp-integrations"
-                        />
                     </p>
                     <LegacyStack>
                         <ButtonGroup>
