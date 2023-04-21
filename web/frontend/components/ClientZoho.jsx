@@ -30,7 +30,7 @@ export function ClientZoho() {
     useEffect(() => {
         setZohoListKey(data?.listKey);
         const customHttpRouteRequest = async () => {
-            const result = await api.connection.fetch("https://aerialforms--development.gadget.app/custom")
+            const result = await api.connection.fetch("https://aerialforms.gadget.app/custom")
             const json = await result.json()
             setStoreData(json.currentShopId.toString())
         }
