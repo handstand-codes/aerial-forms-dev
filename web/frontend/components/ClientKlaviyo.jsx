@@ -16,6 +16,10 @@ import {
     Form
   } from "@shopify/polaris";
 
+import {
+    CircleInformationMajor
+} from '@shopify/polaris-icons';
+
 export function ClientKlaviyo() {    
 
     // get the current store data
@@ -118,7 +122,7 @@ export function ClientKlaviyo() {
                 <FormLayout> 
                     <FormLayout.Group>
                         <Text color="success" variant="heading2xl" as="h1">Klaviyo Enabled</Text>
-                                                                                        
+                                                                
                         <Form 
                             onSubmit={() => saveKlaviyoInfo()}>
                             <FormLayout>
@@ -153,12 +157,20 @@ export function ClientKlaviyo() {
                 <LegacyStack alignment="center">
                     <img src={klaviyoLogo} alt='Shopify logo' style={{ width: '25px' }} />
                     <Text variant='headingMd' as='h2'>Klaviyo</Text>
+                    
                 </LegacyStack>
             </LegacyCard.Section>
             <LegacyCard.Section>
                 <LegacyStack spacing="loose" vertical>
                     <p>
                         New email submissions create new customers in Klaviyo.
+                        <Button
+                            alignment="right"
+                            plain
+                            icon={CircleInformationMajor}
+                            accessibilityLabel="Learn more"
+                            url="https://handstand.helpscoutdocs.com/article/4-how-to-find-api-keys-for-email-integrations"
+                        />
                     </p>
                     <LegacyStack>
                         <ButtonGroup>
