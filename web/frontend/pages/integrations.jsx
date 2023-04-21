@@ -21,6 +21,8 @@ export default function IntegrationsPage() {
             <ClientMailchimp />
             <ClientHubspot />
             <ClientDrip />
+            <br />
+            <br />
                    
         </Page>
   )}
